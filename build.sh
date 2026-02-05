@@ -75,6 +75,31 @@ apply_config() {
     cat "$BASE_PATH/deconfig/proxy.config" >> "$BASE_PATH/$BUILD_DIR/.config"
 }
 
+# 替换 banner
+replace_banner() {
+    local banner_source="$BASE_PATH/deconfig/banner"
+    local banner_target="$BUILD_DIR/package/base-files/files/etc/banner"
+
+    # 确保目标目录存在
+    mkdir -p "$(dirname "$banner_target")"
+
+    # 检查自定义 banner 文件是否存在
+    if [[ -f "$banner_source" ]]; then
+        echo "检测到自定义 banner 文件，正在应用..."
+        cp -f "$banner_source" "$banner_target" || {
+            echo "警告：复制 banner 文件失败"
+            return 1
+        }
+        echo "文件内容验证:"
+        cat "$banner_target" || {
+            echo "警告：无法读取 banner 文件内容"
+            return 1
+        }
+    else
+        echo "未提供自定义 banner 文件，保持 OpenWrt 默认配置"
+    fi
+}
+
 REPO_URL=$(read_ini_by_key "REPO_URL")
 REPO_BRANCH=$(read_ini_by_key "REPO_BRANCH")
 REPO_BRANCH=${REPO_BRANCH:-main}
@@ -86,18 +111,13 @@ if [[ -d $BASE_PATH/action_build ]]; then
     BUILD_DIR="action_build"
 fi
 
-echo "Calling update.sh with parameters:"
-echo "REPO_URL: $REPO_URL"
-echo "REPO_BRANCH: $REPO_BRANCH"
-echo "BUILD_DIR: $BASE_PATH/$BUILD_DIR"
-echo "COMMIT_HASH: $COMMIT_HASH"
-
 # 在调用 update.sh 前添加执行权限
 chmod +x "$BASE_PATH/update.sh"
 "$BASE_PATH/update.sh" "$REPO_URL" "$REPO_BRANCH" "$BASE_PATH/$BUILD_DIR" "$COMMIT_HASH"
 
 apply_config
 remove_uhttpd_dependency
+replace_banner
 
 cd "$BASE_PATH/$BUILD_DIR"
 make defconfig
