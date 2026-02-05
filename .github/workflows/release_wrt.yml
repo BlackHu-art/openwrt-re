@@ -14,8 +14,7 @@ on:
           - jdcloud_ipq60xx_libwrt
           - x64_immwrt
 
-permissions:
-  actions: write
+permissions: write-all
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
