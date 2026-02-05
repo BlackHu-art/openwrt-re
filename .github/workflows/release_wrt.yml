@@ -16,7 +16,7 @@ on:
 
 permissions:
   actions: write
-  
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -42,7 +42,7 @@ jobs:
           sudo -E systemctl daemon-reload
 
       - name: Checkout
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@main
 
       - name: Set Build Date and Timezone
         run: |
