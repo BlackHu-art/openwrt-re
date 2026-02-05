@@ -92,8 +92,9 @@ echo "REPO_BRANCH: $REPO_BRANCH"
 echo "BUILD_DIR: $BASE_PATH/$BUILD_DIR"
 echo "COMMIT_HASH: $COMMIT_HASH"
 
-chmod +x $BASE_PATH/build.sh
-$BASE_PATH/update.sh "$REPO_URL" "$REPO_BRANCH" "$BASE_PATH/$BUILD_DIR" "$COMMIT_HASH"
+# 在调用 update.sh 前添加执行权限
+chmod +x "$BASE_PATH/update.sh"
+"$BASE_PATH/update.sh" "$REPO_URL" "$REPO_BRANCH" "$BASE_PATH/$BUILD_DIR" "$COMMIT_HASH"
 
 apply_config
 remove_uhttpd_dependency

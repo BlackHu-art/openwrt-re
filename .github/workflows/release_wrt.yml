@@ -42,6 +42,10 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v6.0.2
+      
+      - name: Grant execute permissions to scripts
+        run: |
+          find . -name "*.sh" -exec chmod +x {} \;
 
       - name: Set Build Date and Timezone
         run: |
