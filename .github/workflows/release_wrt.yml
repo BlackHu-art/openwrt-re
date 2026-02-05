@@ -42,7 +42,7 @@ jobs:
           sudo -E systemctl daemon-reload
 
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v6.0.2
 
       - name: Set Build Date and Timezone
         run: |
