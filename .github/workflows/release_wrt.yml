@@ -120,7 +120,7 @@ jobs:
           - LAN 地址：\`10.0.0.1\`
 
           🧩 **预装插件**
-          $(grep -oP "luci-app(-[a-zA-Z0-9]{1,}){1,}" ./firmware/*.manifest | awk -F":" '{print $NF}')
+          $(grep -oP "luci-app(-[a-zA-Z0-9]{1,}){1,}" ./firmware/*.manifest | awk -F":" '{print "- " $NF}')
           EOF
 
       - name: Release Firmware
